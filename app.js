@@ -11,6 +11,10 @@ let tabResultat = genereTableauAleatoire();
 let oldSelection = [];
 let nbAffiche = 0;
 let ready = true;
+let rejouer = 0
+let essais = 0
+const rejouerBTn = document.getElementById("rejouer");
+const essaisBTn = document.getElementById("essais");
 
 afficherTableau()
 
@@ -23,7 +27,7 @@ function afficherTableau(){
             if(tabJeu[i][j] === 0){ // SI la valeur du tableau = 0
                 // ajout d'un bouton a chaque colonne de chaque lignes
 
-                txt += '<button class ="btn btn-primary" onClick="verif(\''+i+'-'+j+'\')">Afficher</button>'
+                txt += '<button class ="btn btn-primary" onClick="verif(\''+i+'-'+j+'\')">?</button>'
             }
             else { // SI la valeur !== 0 ALors affiche une image
                 txt += '<img src="'+getImage(tabJeu[i][j])+'">'
@@ -39,7 +43,7 @@ function afficherTableau(){
 function getImage(valeur){  // Affiche une image en fonction de la valeur (1 à 8)
     let imgTxt = "./image/"
     switch(valeur){
-        case 1 : imgTxt += "elephant.png"
+        case 1 : imgTxt += "elephant.png";
         break;
         
         case 2 : imgTxt += "giraffe.png"
@@ -70,7 +74,7 @@ function getImage(valeur){  // Affiche une image en fonction de la valeur (1 à 
 
 // Fonction recuperer les caracteres 0 et 2 qui sont les positions des images
 
-function verif(bouton){
+function verif(bouton,){
     if(ready){      //SI
         nbAffiche++;        // Ajoute +1 a chaque clique
         let ligne = bouton.substr(0,1); //recup de la ligne
@@ -85,18 +89,29 @@ function verif(bouton){
             setTimeout(function(){      // Apres les 2 cliques 1s d'attente
                 if(tabJeu[ligne][colonne] !== tabResultat[oldSelection[0]][oldSelection[1]]){
                     tabJeu[ligne][colonne] = 0;
-                    tabJeu[oldSelection[0]][oldSelection[1]] = 0;
+                    tabJeu[oldSelection[0]][oldSelection[1]] = 0; 
                 }
                 afficherTableau();
                 ready = true    //Peut recliquer
                 nbAffiche = 0;  // Reinitialisa a 0 apres 2 cliques
                 oldSelection = [ligne,colonne];
+                if(tabJeu[ligne][colonne] == tabResultat[oldSelection[0]][oldSelection[1]]){
+                    rejouer++
+                    if(rejouer == 8){
+                        rejouerBTn.style.display = "block";
+                    }
+                }
+                essais++
+                essaisBTn.textContent = "Essais: " + essais
+                console.log(rejouer)
+                console.log(tabResultat)
             },1000)
         }
         else {
             oldSelection = [ligne,colonne];
         }
     }
+
 }
 
 function genereTableauAleatoire(){
@@ -118,6 +133,12 @@ function genereTableauAleatoire(){
         }
         tab.push(ligne);
     }
-
     return tab;
 }
+
+rejouerBTn.addEventListener("click", () => {
+    rejouerBTn.style.display = "none";
+    document.location.reload(true);
+})
+
+
