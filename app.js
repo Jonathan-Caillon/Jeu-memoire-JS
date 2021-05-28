@@ -1,4 +1,5 @@
 const divResultat = document.querySelector("#resultat");
+const txtBravo = document.getElementById("bravo")
 
 let tabJeu = [
     [0,0,0,0],
@@ -74,7 +75,7 @@ function getImage(valeur){  // Affiche une image en fonction de la valeur (1 à 
 
 // Fonction recuperer les caracteres 0 et 2 qui sont les positions des images
 
-function verif(bouton,){
+function verif(bouton){
     if(ready){      //SI
         nbAffiche++;        // Ajoute +1 a chaque clique
         let ligne = bouton.substr(0,1); //recup de la ligne
@@ -105,7 +106,7 @@ function verif(bouton,){
                 essaisBTn.textContent = "Essais: " + essais
                 console.log(rejouer)
                 console.log(tabResultat)
-            },1000)
+            },600)
         }
         else {
             oldSelection = [ligne,colonne];
@@ -123,7 +124,7 @@ function genereTableauAleatoire(){
         for(let j = 0; j < 4; j++){
             let fin = false;
             while(!fin){        //Tant que les images ne sont pas generer
-                let randomImage = Math.floor(Math.random() * 8); //Genere une valeur de 0 a 7
+                let randomImage = Math.floor(Math.random() * 8); //Genere une valeur de 0 a 7 
                 if(nbImagePosition[randomImage] < 2){
                     ligne.push(randomImage + 1 );
                     nbImagePosition[randomImage]++;
